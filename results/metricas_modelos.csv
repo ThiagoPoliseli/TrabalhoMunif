@@ -1,0 +1,3 @@
+modelo,acuracia,precisao,recall,f1_score,verdadeiro_negativo,falso_positivo,falso_negativo,verdadeiro_positivo
+arvore_decisao,0.6992,0.6010230179028133,0.5164835164835165,0.5555555555555556,639,156,220,235
+rede_neural_mlp,0.7472,0.6925207756232687,0.5494505494505495,0.6127450980392157,684,111,205,250

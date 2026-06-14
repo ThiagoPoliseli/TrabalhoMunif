@@ -12,10 +12,9 @@ Este projeto foi desenvolvido para o trabalho final da disciplina de Inteligênc
 
 > Edite esta seção antes da entrega final com o nome completo e RA de todos os integrantes.
 
-- Thiago Poliseli Silva - RA: PREENCHER
-- Integrante 2 - RA: PREENCHER
-- Integrante 3 - RA: PREENCHER
-- Integrante 4 - RA: PREENCHER
+- Thiago Poliseli Silva: 25362233-2
+- Pedro Toscano: 25362292-2
+- Giovanne Leite: 25362248-2
 
 ---
 
@@ -366,15 +365,3 @@ O projeto demonstrou o processo completo de construção de uma solução basead
 A Rede Neural MLP apresentou melhor desempenho geral, alcançando F1-score de 0.6127 contra 0.5556 da Árvore de Decisão. Portanto, para este dataset e para esta configuração, a Rede Neural MLP foi o modelo mais adequado para prever a popularidade das músicas.
 
 Apesar disso, a Árvore de Decisão continua sendo útil por sua maior interpretabilidade, principalmente em apresentações acadêmicas, pois permite visualizar parte das regras de decisão usadas pelo modelo.
-
----
-
-## 13. Observação Final
-
-Antes da entrega, a equipe deve conferir:
-
-- Se todos os nomes e RAs foram preenchidos.
-- Se o repositório está público ou acessível ao professor.
-- Se o PDF está presente no repositório.
-- Se os gráficos aparecem corretamente no README.
-- Se cada integrante possui o projeto disponível em seu próprio GitHub, por fork, colaboração ou repositório próprio.

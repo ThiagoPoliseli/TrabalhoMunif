@@ -293,51 +293,7 @@ python src/generate_pdf.py
 
 ---
 
-## 11. Estrutura do Projeto
-
-```text
-spotify_ia_project/
-│
-├── data/
-│   └── spotify_tracks_sample.csv
-│
-├── models/
-│   ├── arvore_decisao.pkl
-│   └── rede_neural_mlp.pkl
-│
-├── results/
-│   ├── distribuicao_popularidade.png
-│   ├── distribuicao_classes.png
-│   ├── matriz_confusao_arvore_decisao.png
-│   ├── matriz_confusao_rede_neural_mlp.png
-│   ├── comparacao_modelos.png
-│   ├── arvore_decisao_visualizacao.png
-│   ├── importancia_atributos_arvore_decisao.png
-│   ├── curva_treinamento_rede_neural_mlp.png
-│   ├── importancia_atributos_arvore_decisao.csv
-│   ├── resumo_execucao.md
-│   └── metricas_modelos.csv
-│
-├── docs/
-│   ├── checklist_enunciado.md
-│   ├── guia_estudo_algoritmos.md
-│   └── roteiro_apresentacao.md
-│
-├── src/
-│   ├── generate_dataset.py
-│   ├── generate_pdf.py
-│   ├── main.py
-│   └── predict.py
-│
-├── README.md
-├── relatorio.pdf
-├── requirements.txt
-└── .gitignore
-```
-
----
-
-## 12. Conclusão
+## 11. Conclusão
 
 O projeto demonstrou o processo completo de construção de uma solução baseada em Inteligência Artificial. A equipe definiu um problema de classificação, criou e preparou um dataset, treinou dois modelos supervisionados, avaliou os resultados com métricas e gráficos e comparou o desempenho obtido.
 

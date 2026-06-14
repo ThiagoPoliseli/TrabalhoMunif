@@ -16,25 +16,6 @@ Este projeto foi desenvolvido para o trabalho final da disciplina de Inteligênc
 
 ---
 
-## Checklist rápido do enunciado
-
-Este repositório contém:
-
-- Código-fonte em `src/`.
-- Dataset em `data/spotify_tracks_sample.csv`.
-- Modelos treinados em `models/`.
-- Métricas, matrizes de confusão e gráficos em `results/`.
-- PDF do relatório em `relatorio.pdf`.
-- Material de estudo e apresentação em `docs/`.
-
-Arquivos úteis para estudar antes da apresentação:
-
-- [`docs/checklist_enunciado.md`](docs/checklist_enunciado.md): conferência item a item do que o professor pediu.
-- [`docs/guia_estudo_algoritmos.md`](docs/guia_estudo_algoritmos.md): explicação da Árvore de Decisão, Rede Neural MLP, métricas e perguntas prováveis.
-- [`docs/roteiro_apresentacao.md`](docs/roteiro_apresentacao.md): roteiro sugerido para apresentar o trabalho.
-
----
-
 ## 1. Contextualização
 
 Plataformas de streaming musical, como o Spotify, armazenam diversos atributos sobre as músicas, incluindo características sonoras, gênero, duração e indicadores de popularidade. Esses dados podem ser utilizados para investigar padrões relacionados ao sucesso de uma música.

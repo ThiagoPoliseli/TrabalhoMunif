@@ -10,8 +10,6 @@ Este projeto foi desenvolvido para o trabalho final da disciplina de Inteligênc
 
 ## Integrantes
 
-> Edite esta seção antes da entrega final com o nome completo e RA de todos os integrantes.
-
 - Thiago Poliseli Silva: 25362233-2
 - Pedro Toscano: 25362292-2
 - Giovanne Leite: 25362248-2

@@ -68,23 +68,23 @@ data/spotify_tracks_sample.csv
 
 ### 4.4 Principais atributos
 
-| Atributo | Descrição |
-|---|---|
-| `track_id` | Identificador da música |
-| `track_name` | Nome fictício da música |
-| `artists` | Nome fictício do artista |
-| `track_genre` | Gênero musical |
-| `popularity` | Popularidade da música de 0 a 100 |
-| `danceability` | Indicador de dançabilidade |
-| `energy` | Indicador de energia |
-| `loudness` | Intensidade sonora em dB |
-| `speechiness` | Presença de fala na música |
-| `acousticness` | Grau de características acústicas |
-| `instrumentalness` | Grau instrumental |
-| `liveness` | Probabilidade de performance ao vivo |
-| `valence` | Positividade musical |
-| `tempo` | BPM da música |
-| `duration_ms` | Duração em milissegundos |
+| Atributo           | Descrição                            |
+| ------------------ | ------------------------------------ |
+| `track_id`         | Identificador da música              |
+| `track_name`       | Nome fictício da música              |
+| `artists`          | Nome fictício do artista             |
+| `track_genre`      | Gênero musical                       |
+| `popularity`       | Popularidade da música de 0 a 100    |
+| `danceability`     | Indicador de dançabilidade           |
+| `energy`           | Indicador de energia                 |
+| `loudness`         | Intensidade sonora em dB             |
+| `speechiness`      | Presença de fala na música           |
+| `acousticness`     | Grau de características acústicas    |
+| `instrumentalness` | Grau instrumental                    |
+| `liveness`         | Probabilidade de performance ao vivo |
+| `valence`          | Positividade musical                 |
+| `tempo`            | BPM da música                        |
+| `duration_ms`      | Duração em milissegundos             |
 
 ### 4.5 Variável alvo
 
@@ -198,10 +198,10 @@ Este gráfico mostra a evolução da perda durante o treinamento da rede neural 
 
 ## 7. Tabela de Métricas
 
-| Modelo | Acurácia | Precisão | Recall | F1-score |
-|---|---:|---:|---:|---:|
-| Árvore de Decisão | 0.6992 | 0.6010 | 0.5165 | 0.5556 |
-| Rede Neural MLP | 0.7472 | 0.6925 | 0.5495 | 0.6127 |
+| Modelo            | Acurácia | Precisão | Recall | F1-score |
+| ----------------- | -------: | -------: | -----: | -------: |
+| Árvore de Decisão |   0.6992 |   0.6010 | 0.5165 |   0.5556 |
+| Rede Neural MLP   |   0.7472 |   0.6925 | 0.5495 |   0.6127 |
 
 ---
 

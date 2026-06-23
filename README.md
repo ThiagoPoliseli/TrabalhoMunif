@@ -1,302 +1,100 @@
-Disciplina de Inteligência Artificial , Professor Munif , Unicesumar 2026
+# Trabalho Final — Inteligência Artificial
 
-# Trabalho Final - Inteligência Artificial
+## Predição de popularidade de faixas do Spotify
 
-## Predição de Popularidade de Músicas Estilo Spotify
-
-Este projeto foi desenvolvido para o trabalho final da disciplina de Inteligência Artificial da Unicesumar. O objetivo é aplicar o processo completo de criação de uma solução baseada em IA: definição do problema, preparação dos dados, treinamento de modelos, avaliação, comparação de resultados e conclusão.
-
----
+Este projeto classifica faixas como populares ou não populares a partir de atributos de áudio e metadados do Spotify. A implementação utiliza a base real **Spotify Tracks Dataset**:
 
 ## Integrantes
 
-- Thiago Poliseli Silva: 25362233-2
-- Pedro Toscano: 25362292-2
-- Giovanne Leite: 25362248-2
+- Thiago Poliseli Silva — 25362233-2
+- Pedro Toscano — 25362292-2
+- Giovanne Leite — 25362248-2
 
----
+## Problema e hipótese
 
-## 1. Contextualização
+Pergunta investigada: é possível prever se uma faixa terá popularidade alta usando suas características musicais?
 
-Plataformas de streaming musical, como o Spotify, armazenam diversos atributos sobre as músicas, incluindo características sonoras, gênero, duração e indicadores de popularidade. Esses dados podem ser utilizados para investigar padrões relacionados ao sucesso de uma música.
+A coluna `popularity` (escala de 0 a 100) é transformada na variável alvo binária `popularidade_alta`:
 
-Neste projeto, foi criada uma base tabular inspirada em datasets de músicas do Spotify, contendo atributos como `danceability`, `energy`, `loudness`, `acousticness`, `valence`, `tempo`, `duration_ms` e `track_genre`.
+- `1` (popular): `popularity >= 70`;
+- `0` (não popular): `popularity < 70`.
 
----
+A hipótese é que características como energia, dançabilidade, intensidade sonora, valência, tempo, gênero e conteúdo explícito guardam padrões associados à popularidade.
 
-## 2. Problema
+## Dataset
 
-O problema investigado é:
+As informações textuais que poderiam induzir memorização (`track_id`, `artists`, `album_name` e `track_name`) são preservadas para consulta e demonstração, mas não entram no treinamento. Os atributos usados são:
 
-> É possível prever se uma música será popular ou não popular com base em suas características musicais?
+| Tipo        | Atributos                                                                                                                                                               |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Numéricos   | `duration_ms`, `danceability`, `energy`, `key`, `loudness`, `mode`, `speechiness`, `acousticness`, `instrumentalness`, `liveness`, `valence`, `tempo`, `time_signature` |
+| Categóricos | `explicit`, `track_genre`                                                                                                                                               |
+| Alvo        | `popularity` → `popularidade_alta`                                                                                                                                      |
 
-Para isso, o projeto transforma a coluna `popularity` em uma variável alvo binária chamada `popularidade_alta`.
+## Preparação dos dados
 
-Critério utilizado:
+O carregamento, em `src/main.py`, executa as seguintes etapas:
 
-- `popularidade_alta = 1`: música popular, quando `popularity >= 70`.
-- `popularidade_alta = 0`: música não popular, quando `popularity < 70`.
+1. Lê o CSV real e remove a coluna de índice sem nome.
+2. Valida todas as colunas necessárias e converte os campos numéricos.
+3. Padroniza `explicit` como `Sim` ou `Não`, remove valores ausentes e duplicatas exatas.
+4. Cria `popularidade_alta` a partir do limiar 70.
+5. Usa `StandardScaler` nos atributos numéricos e `OneHotEncoder` em `explicit` e `track_genre`.
+6. Divide os dados em 75% para treino e 25% para teste, de forma estratificada.
 
----
+## Modelos de IA
 
-## 3. Hipótese
+O trabalho mantém dois métodos supervisionados:
 
-A hipótese da equipe é que músicas com maior energia, dançabilidade, valência e intensidade sonora tendem a apresentar maior popularidade. Assim, espera-se que modelos de Inteligência Artificial consigam identificar padrões nos atributos musicais e classificar músicas como populares ou não populares.
+- **Árvore de Decisão**: `DecisionTreeClassifier` com profundidade máxima 8, mínimo de 20 amostras por folha e pesos balanceados para lidar com a menor quantidade de faixas muito populares. É o modelo mais interpretável.
+- **Rede Neural MLP**: `MLPClassifier` com camadas ocultas `(48, 24)`, ReLU, Adam, parada antecipada e no máximo 300 épocas. É o modelo capaz de aprender relações não lineares.
 
----
+As métricas calculadas são acurácia, precisão, recall, F1-score e matriz de confusão. O F1-score é o critério principal, pois considera simultaneamente precisão e recall em uma classe positiva menos frequente.
 
-## 4. Dataset
-
-### 4.1 Origem dos dados
-
-O dataset utilizado neste projeto foi criado pela equipe por meio do script `src/generate_dataset.py`. A base é sintética, porém inspirada na estrutura de datasets públicos de músicas do Spotify, utilizando faixas realistas para atributos musicais.
-
-O enunciado permite utilizar um dataset existente ou criar um dataset próprio. A escolha por uma base criada pela equipe torna o projeto totalmente reprodutível, sem depender de cadastro em plataformas externas.
-
-### 4.2 Arquivo utilizado
-
-O arquivo principal está em:
+## Estrutura
 
 ```text
-data/spotify_tracks_sample.csv
+data/spotify_tracks_dataset.csv  #
+src/main.py                      # treinamento, avaliação e gráficos
+src/predict.py                   # demonstração com faixas reais da base
+src/generate_pdf.py              # cria o relatório PDF a partir deste README
+models/                          # modelos gerados após o treinamento
+results/                         # métricas, gráficos e resumo gerados após o treinamento
+docs/                            # guia e roteiro atualizados para apresentação
 ```
 
-### 4.3 Quantidade de registros
-
-- Total de registros: 5.000 músicas.
-- Total de colunas: 15.
-
-### 4.4 Principais atributos
-
-| Atributo           | Descrição                            |
-| ------------------ | ------------------------------------ |
-| `track_id`         | Identificador da música              |
-| `track_name`       | Nome fictício da música              |
-| `artists`          | Nome fictício do artista             |
-| `track_genre`      | Gênero musical                       |
-| `popularity`       | Popularidade da música de 0 a 100    |
-| `danceability`     | Indicador de dançabilidade           |
-| `energy`           | Indicador de energia                 |
-| `loudness`         | Intensidade sonora em dB             |
-| `speechiness`      | Presença de fala na música           |
-| `acousticness`     | Grau de características acústicas    |
-| `instrumentalness` | Grau instrumental                    |
-| `liveness`         | Probabilidade de performance ao vivo |
-| `valence`          | Positividade musical                 |
-| `tempo`            | BPM da música                        |
-| `duration_ms`      | Duração em milissegundos             |
-
-### 4.5 Variável alvo
-
-A variável alvo é `popularidade_alta`, criada a partir de `popularity`.
-
-```python
-popularidade_alta = 1 se popularity >= 70
-popularidade_alta = 0 se popularity < 70
-```
-
-### 4.6 Preparação dos dados
-
-As etapas de preparação realizadas foram:
-
-1. Carregamento do arquivo CSV.
-2. Validação das colunas obrigatórias.
-3. Remoção de registros com valores ausentes nas colunas utilizadas.
-4. Criação da variável alvo `popularidade_alta`.
-5. Padronização dos atributos numéricos com `StandardScaler`.
-6. Codificação do atributo categórico `track_genre` com `OneHotEncoder`.
-7. Divisão da base em treino e teste.
-
-### 4.7 Divisão treino/teste
-
-- Treino: 75% dos dados, totalizando 3.750 amostras.
-- Teste: 25% dos dados, totalizando 1.250 amostras.
-- Divisão estratificada para manter a proporção entre músicas populares e não populares.
-
----
-
-## 5. Métodos de Inteligência Artificial Utilizados
-
-O trabalho exige pelo menos um método da Parte 1 da disciplina e pelo menos um método da Parte 2. Neste projeto foram utilizados dois modelos:
-
-### 5.1 Método da Parte 1 - Árvore de Decisão
-
-A Árvore de Decisão é um modelo supervisionado que toma decisões com base em regras geradas a partir dos atributos do dataset. Ela é simples de interpretar e permite visualizar parte da lógica usada para classificar as músicas.
-
-Configuração utilizada:
-
-```python
-DecisionTreeClassifier(max_depth=6, random_state=42)
-```
-
-### 5.2 Método da Parte 2 - Rede Neural MLP
-
-A Rede Neural MLP, ou Multilayer Perceptron, é um modelo supervisionado baseado em camadas de neurônios artificiais. Ela consegue aprender relações não lineares entre os atributos de entrada e a classe de saída.
-
-Configuração utilizada:
-
-```python
-MLPClassifier(
-    hidden_layer_sizes=(32, 16),
-    activation="relu",
-    solver="adam",
-    max_iter=400,
-    random_state=42,
-    early_stopping=True
-)
-```
-
----
-
-## 6. Resultados e Avaliação dos Modelos
-
-As métricas utilizadas foram:
-
-- Acurácia
-- Precisão
-- Recall
-- F1-score
-- Matriz de confusão
-
-### 6.1 Distribuição da popularidade
-
-![Distribuição da popularidade](results/distribuicao_popularidade.png)
-
-### 6.2 Distribuição das classes
-
-![Distribuição das classes](results/distribuicao_classes.png)
-
-### 6.3 Matriz de confusão - Árvore de Decisão
-
-![Matriz de confusão - Árvore de Decisão](results/matriz_confusao_arvore_decisao.png)
-
-### 6.4 Matriz de confusão - Rede Neural MLP
-
-![Matriz de confusão - Rede Neural MLP](results/matriz_confusao_rede_neural_mlp.png)
-
-### 6.5 Comparação gráfica entre modelos
-
-![Comparação dos modelos](results/comparacao_modelos.png)
-
-### 6.6 Visualização parcial da Árvore de Decisão
-
-![Visualização parcial da árvore](results/arvore_decisao_visualizacao.png)
-
-### 6.7 Importância dos atributos - Árvore de Decisão
-
-Este gráfico ajuda a explicar quais variáveis mais influenciaram a Árvore de Decisão.
-
-![Importância dos atributos](results/importancia_atributos_arvore_decisao.png)
-
-### 6.8 Curva de treinamento - Rede Neural MLP
-
-Este gráfico mostra a evolução da perda durante o treinamento da rede neural e a acurácia de validação usada pelo `early_stopping`.
-
-![Curva de treinamento da MLP](results/curva_treinamento_rede_neural_mlp.png)
-
----
-
-## 7. Tabela de Métricas
-
-| Modelo            | Acurácia | Precisão | Recall | F1-score |
-| ----------------- | -------: | -------: | -----: | -------: |
-| Árvore de Decisão |   0.6992 |   0.6010 | 0.5165 |   0.5556 |
-| Rede Neural MLP   |   0.7472 |   0.6925 | 0.5495 |   0.6127 |
-
----
-
-## 8. Comparação dos Resultados
-
-A Rede Neural MLP apresentou melhor desempenho geral em comparação com a Árvore de Decisão. O modelo MLP obteve maior acurácia, precisão e F1-score.
-
-A Árvore de Decisão teve desempenho inferior, mas possui a vantagem de ser mais interpretável. Isso facilita a explicação das regras utilizadas pelo modelo. Já a Rede Neural MLP apresentou maior capacidade de identificar padrões mais complexos nos dados, resultando em melhor desempenho preditivo.
-
-Com base no F1-score, que equilibra precisão e recall, o melhor modelo foi a Rede Neural MLP.
-
----
-
-## 9. Modelo Treinado
-
-Os modelos treinados estão disponíveis na pasta:
-
-```text
-models/
-```
-
-Arquivos gerados:
-
-```text
-models/arvore_decisao.pkl
-models/rede_neural_mlp.pkl
-```
-
-Esses arquivos podem ser carregados posteriormente com a biblioteca `joblib`.
-
----
-
-## 10. Como Executar o Projeto
-
-### 10.1 Clonar o repositório
-
-```bash
-git clone URL_DO_REPOSITORIO
-cd spotify_ia_project
-```
-
-### 10.2 Criar ambiente virtual
+## Como executar
 
 ```bash
 python -m venv .venv
 ```
 
-Ativar no Windows:
+No Windows:
 
 ```bash
 .venv\Scripts\activate
-```
-
-Ativar no Linux/Mac:
-
-```bash
-source .venv/bin/activate
-```
-
-### 10.3 Instalar dependências
-
-```bash
 pip install -r requirements.txt
-```
-
-### 10.4 Gerar o dataset
-
-```bash
-python src/generate_dataset.py
-```
-
-### 10.5 Treinar e avaliar os modelos
-
-```bash
 python src/main.py
-```
-
-### 10.6 Fazer uma predição de exemplo
-
-```bash
 python src/predict.py
-```
-
-### 10.7 Gerar o PDF do relatório
-
-```bash
 python src/generate_pdf.py
 ```
 
----
+No Linux/macOS:
 
-## 11. Conclusão
+```bash
+source .venv/bin/activate
+pip install -r requirements.txt
+python src/main.py
+python src/predict.py
+python src/generate_pdf.py
+```
 
-O projeto demonstrou o processo completo de construção de uma solução baseada em Inteligência Artificial. A equipe definiu um problema de classificação, criou e preparou um dataset, treinou dois modelos supervisionados, avaliou os resultados com métricas e gráficos e comparou o desempenho obtido.
+O treinamento atualiza `models/` e gera em `results/` a tabela de métricas, matrizes de confusão, distribuição do dataset, comparação dos modelos, árvore parcial, importância dos atributos, curva de treinamento da MLP e um resumo da execução. O PDF é gerado na raiz como `relatorio.pdf`.
 
-A Rede Neural MLP apresentou melhor desempenho geral, alcançando F1-score de 0.6127 contra 0.5556 da Árvore de Decisão. Portanto, para este dataset e para esta configuração, a Rede Neural MLP foi o modelo mais adequado para prever a popularidade das músicas.
+## Demonstração de predição
 
-Apesar disso, a Árvore de Decisão continua sendo útil por sua maior interpretabilidade, principalmente em apresentações acadêmicas, pois permite visualizar parte das regras de decisão usadas pelo modelo.
+`python src/predict.py` carrega a MLP treinada e exibe a previsão e a probabilidade estimada para três faixas reais, escolhidas da própria base. A saída também mostra a popularidade original para facilitar a comparação durante a apresentação.
+
+## Reprodutibilidade
+
+Todos os passos usam `random_state=42`. Assim, usando o CSV incluído e as versões indicadas em `requirements.txt`, a divisão, o treinamento e os artefatos podem ser reproduzidos.

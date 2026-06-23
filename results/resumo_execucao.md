@@ -1,34 +1,26 @@
-# Resumo da Execucao
+# Resumo da Execução
+
+## Dataset utilizado
+
+- Fonte: Spotify Tracks Dataset.
+- Registros válidos após limpeza: 113,550.
+- Classe positiva: popularity >= 70.
 
 ## Resultado principal
-O melhor modelo pelo F1-score foi `rede_neural_mlp` com F1-score de 0.6127.
 
-## Comparacao rapida
+O melhor modelo pelo F1-score foi `arvore_decisao` com F1-score de 0.1446.
 
-| Modelo | Acuracia | Precisao | Recall | F1-score | VP | VN | FP | FN |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| arvore_decisao | 0.6992 | 0.6010 | 0.5165 | 0.5556 | 235 | 639 | 156 | 220 |
-| rede_neural_mlp | 0.7472 | 0.6925 | 0.5495 | 0.6127 | 250 | 684 | 111 | 205 |
+| Modelo          | Acurácia | Precisão | Recall | F1-score |   VP |    VN |    FP |   FN |
+| --------------- | -------: | -------: | -----: | -------: | ---: | ----: | ----: | ---: |
+| arvore_decisao  |   0.5561 |   0.0797 | 0.7791 |   0.1446 | 1065 | 14722 | 12299 |  302 |
+| rede_neural_mlp |   0.9520 |   1.0000 | 0.0029 |   0.0058 |    4 | 27021 |     0 | 1363 |
 
-## Leitura para apresentacao
-A Arvore de Decisao e mais facil de explicar porque transforma os dados em regras. Neste experimento, ela atingiu F1-score de 0.5556.
-A Rede Neural MLP conseguiu desempenho melhor porque aprende combinacoes nao lineares entre os atributos. Neste experimento, ela atingiu F1-score de 0.6127.
+## Atributos mais importantes na Árvore de Decisão
 
-## Atributos mais importantes na Arvore de Decisao
-
-| Atributo | Importancia |
-|---|---:|
-| danceability | 0.2517 |
-| energy | 0.2126 |
-| tempo | 0.1210 |
-| acousticness | 0.1002 |
-| valence | 0.0971 |
-
-## Arquivos gerados
-
-- `results/metricas_modelos.csv`
-- `results/comparacao_modelos.png`
-- `results/matriz_confusao_arvore_decisao.png`
-- `results/matriz_confusao_rede_neural_mlp.png`
-- `results/importancia_atributos_arvore_decisao.png`
-- `results/curva_treinamento_rede_neural_mlp.png`
+| Atributo         | Importância |
+| ---------------- | ----------: |
+| instrumentalness |      0.2649 |
+| energy           |      0.1274 |
+| acousticness     |      0.1208 |
+| track_genre_pop  |      0.0712 |
+| liveness         |      0.0634 |

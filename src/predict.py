@@ -1,8 +1,4 @@
-"""Exemplos de predicao usando o modelo treinado.
 
-Use este arquivo na apresentacao para demonstrar como o modelo recebe
-atributos de uma musica e devolve a classe prevista.
-"""
 from __future__ import annotations
 
 from pathlib import Path
@@ -10,72 +6,39 @@ from pathlib import Path
 import joblib
 import pandas as pd
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
+from main import (
+    CATEGORICAL_FEATURES,
+    NUMERIC_FEATURES,
+    POPULARITY_THRESHOLD,
+    ROOT_DIR,
+    load_dataset,
+)
+
 MODEL_PATH = ROOT_DIR / "models" / "rede_neural_mlp.pkl"
 
 
 def main() -> None:
     if not MODEL_PATH.exists():
-        raise FileNotFoundError("Modelo nao encontrado. Execute primeiro: python src/main.py")
+        raise FileNotFoundError("Modelo não encontrado. Execute primeiro: python src/main.py")
 
     model = joblib.load(MODEL_PATH)
-    samples = pd.DataFrame(
-        [
-            {
-                "descricao": "Musica pop dancante e energetica",
-                "danceability": 0.82,
-                "energy": 0.76,
-                "loudness": -4.8,
-                "speechiness": 0.05,
-                "acousticness": 0.18,
-                "instrumentalness": 0.01,
-                "liveness": 0.12,
-                "valence": 0.74,
-                "tempo": 124.0,
-                "duration_ms": 205000,
-                "track_genre": "pop",
-            },
-            {
-                "descricao": "Musica indie mais acustica e instrumental",
-                "danceability": 0.38,
-                "energy": 0.34,
-                "loudness": -13.5,
-                "speechiness": 0.04,
-                "acousticness": 0.72,
-                "instrumentalness": 0.42,
-                "liveness": 0.19,
-                "valence": 0.31,
-                "tempo": 92.0,
-                "duration_ms": 242000,
-                "track_genre": "indie",
-            },
-            {
-                "descricao": "Funk com batida forte e alta dancabilidade",
-                "danceability": 0.88,
-                "energy": 0.83,
-                "loudness": -3.9,
-                "speechiness": 0.11,
-                "acousticness": 0.08,
-                "instrumentalness": 0.02,
-                "liveness": 0.10,
-                "valence": 0.69,
-                "tempo": 132.0,
-                "duration_ms": 198000,
-                "track_genre": "funk",
-            },
-        ]
-    )
-
-    features = samples.drop(columns=["descricao"])
+    df = load_dataset()
+    popular = df[df["popularity"] >= POPULARITY_THRESHOLD].sample(1, random_state=42)
+    non_popular = df[df["popularity"] < POPULARITY_THRESHOLD].sample(2, random_state=42)
+    samples = pd.concat([popular, non_popular], ignore_index=True)
+    features = samples[NUMERIC_FEATURES + CATEGORICAL_FEATURES]
     predictions = model.predict(features)
     probabilities = model.predict_proba(features)[:, 1]
 
-    for description, prediction, probability in zip(samples["descricao"], predictions, probabilities):
-        label = "Popular" if prediction == 1 else "Nao popular"
+    for (_, row), prediction, probability in zip(samples.iterrows(), predictions, probabilities):
+        label = "Popular" if prediction == 1 else "Não popular"
+        actual = "Popular" if row["popularity"] >= POPULARITY_THRESHOLD else "Não popular"
         print("-" * 70)
-        print(description)
-        print(f"Predicao: {label}")
-        print(f"Probabilidade de ser popular: {probability:.2%}")
+        print(f"Faixa: {row['track_name']} — {row['artists']}")
+        print(f"Gênero: {row['track_genre']} | Popularidade original: {row['popularity']}")
+        print(f"Classe real: {actual}")
+        print(f"Predição: {label}")
+        print(f"Probabilidade de popularidade alta: {probability:.2%}")
 
 
 if __name__ == "__main__":
